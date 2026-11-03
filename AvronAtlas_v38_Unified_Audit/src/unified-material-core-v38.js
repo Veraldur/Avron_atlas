@@ -149,6 +149,13 @@ function graph(){const w=W(),edges=[];if(!w)return edges;
  for(const a of w.articles||[])for(const from of a.parentRefs||[])if(has(from))edges.push({from,to:'article:'+a.id,role:'parent'});
  for(const b of w.chronicleBooks||[])for(const id of b.articleIds||[])if(has('article:'+id))edges.push({from:'book:'+b.id,to:'article:'+id,role:'book-article'});
  for(const x of w.loreMatrix?.records||[])for(const ref of x.nodeIds||[]){const k=has(ref)?ref:has('loreNode:'+ref)?'loreNode:'+ref:null;if(k)edges.push({from:'lore:'+x.id,to:k,role:'intersection-participant'});}
+ for(const link of scanWiki().found)edges.push({...link,role:'wiki'});
+ for(const scene of w.chronicles||[]){
+  const from='chronicle:'+scene.id;
+  for(const [kind,id] of [['god',scene.godId],['map',scene.mapId],['timelineEvent',scene.timelineRef?.eventId]]){
+   if(id&&has(kind+':'+id))edges.push({from,to:kind+':'+id,role:'chronicle'});
+  }
+ }
  return edges;
 }
 function norm(s){return String(s||'').normalize('NFC').toLocaleLowerCase('ru').replace(/ё/g,'е').replace(/[\s\u00a0]+/g,' ').trim()}

@@ -1,0 +1,73 @@
+
+#modeEdit, #modeRead, button[data-mode="edit"], button[data-mode="read"] {
+  border: 1px solid #94afc5;
+  border-radius: 999px;
+  background: linear-gradient(#fbfdff,#c7e0f0);
+  color: #17374f;
+  font-weight: 650;
+}
+#modeEdit.on, #modeRead.on, button[data-mode].active {
+  background: linear-gradient(#276e9c,#103d61);
+  border-color: #a2e1ff;
+  color: #fff;
+  box-shadow: inset 0 1px 1px #ffffff70, 0 0 0 2px #8edcf550;
+}
+.av41-neutral #workspace, .av41-neutral #sectionScreen {
+  background: radial-gradient(ellipse at 20% 0%,#edfcff,transparent 60%),
+              linear-gradient(165deg,#74d7fb,#3c91d2 65%,#76be77);
+}
+.av41-neutral #tabObject, .av41-neutral #tabTypes {
+  border: 1px solid #c6f5ff;
+  border-radius: 16px;
+  box-shadow: inset 0 1px 1px #fff9, 0 8px 20px #17548233;
+}
+
+#av31History.av41-folded > :not([data-fold]) { display: none; }
+#av31History [data-fold] { order: -1; }
+body:has(#avronArticleStudio:not([hidden])) #av31History { visibility: hidden; }
+
+body.av41-neutral #avronHub,
+body.av41-neutral #avronHub .av-hub-wrap {
+  background: radial-gradient(ellipse at 25% 0%, #fff 0%, transparent 46%),
+    linear-gradient(160deg, #b9f4ff 0%, #50bce8 58%, #a5df91 100%);
+  color: #143c55;
+}
+body.av41-neutral #avronHub .av-hub-wrap { background: transparent; }
+.av41-neutral .av-hub-brand,
+.av41-neutral .av-hub-eyebrow,
+.av41-neutral .av-hub-hero > p,
+.av41-neutral .av-hub-section-title,
+.av41-neutral .av-hub-card h3,
+.av41-neutral .av-hub-card p,
+.av41-neutral .av-hub-subgrid > span,
+.av41-neutral #avSlotNav .av-slot-caption,
+.av41-neutral #avSlotDock .av-slot-caption { display: none; }
+.av41-neutral #avronHub button,
+.av41-neutral #avSlotNav .av-slot,
+.av41-neutral #avSlotDock .av-slot,
+.av41-neutral .matrix-shell {
+  color: #143c55;
+  background: linear-gradient(180deg, #f9feffe8, #a4e8f9cf);
+  border: 1px solid #fff;
+  border-radius: 16px;
+  box-shadow: inset 0 1px 2px #fff, 0 5px 16px #17699136;
+}
+.av41-neutral #avSlotNav .av-slot,
+.av41-neutral #avSlotDock .av-slot { min-width: 44px; min-height: 44px; }
+
+.showcase-catalog { padding: clamp(1rem, 3vw, 2.5rem); }
+.showcase-catalog .showcase-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: 1rem; }
+.showcase-catalog button { display: grid; place-content: center; gap: .5rem; min-height: 7rem; }
+.showcase-catalog button span { font-size: 1.65rem; }
+.av41-neutral .showcase-catalog h2, .av41-neutral .showcase-catalog strong { display: none; }
+.av41-neutral .showcase-catalog button {
+  color: #143c55; background: linear-gradient(#fff, #a4e8f9); border: 1px solid #fff; border-radius: 16px;
+}
+
+body.avron-showcase-open #avGlobalMode { display: none; }
+.showcase-head-actions [data-gallery-mode][aria-pressed="true"] {
+  outline: 2px solid #b8e4ff;
+  outline-offset: -2px;
+}
+
+#avSlotNav { scroll-snap-type: none; scroll-behavior: auto; }

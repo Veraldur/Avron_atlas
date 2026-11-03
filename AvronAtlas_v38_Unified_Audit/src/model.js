@@ -115,7 +115,8 @@ function emptyWorld() {
     timeline: { calendars: [], eras: [], campaigns: [], events: [] },
     sections: [{ id: 'pantheon', name: 'Пантеон', icon: '✧', layout: 'encyclopedia', entries: [] }],
     media: { music: '', musicName: '' },
-    pantheon: [], chronicles: [], beliefMatrix: [], autoWikiLinks: true
+    presentation: { theme: 'frutiger-aero', iconNavigation: true },
+    pantheonConfigured: true, pantheon: [], chronicles: [], beliefMatrix: [], autoWikiLinks: true
   };
 }
 
@@ -218,6 +219,10 @@ function sanitize(raw) {
   w.storyForgeTables = w.storyForgeTables && typeof w.storyForgeTables === 'object' && !Array.isArray(w.storyForgeTables) ? w.storyForgeTables : {};
   w.timeline = w.timeline && typeof w.timeline === 'object' ? w.timeline : { calendars: [], eras: [], campaigns: [], events: [] };
   w.autoWikiLinks = w.autoWikiLinks!==false;
+  if (w.id === 'new-world') {
+    w.presentation ||= base.presentation;
+    w.pantheonConfigured = true;
+  }
   w.pantheon = Array.isArray(w.pantheon) ? w.pantheon : [];
   w.beliefMatrix = Array.isArray(w.beliefMatrix) ? w.beliefMatrix : [];
   w.beliefMatrix.forEach(r=>{r.id ||= uid();r.title ||= 'Пересечение';r.kind ||= 'Культ';r.notes ||= '';r.godIds = [...new Set((r.godIds||[]).map(Number))];r.entityIds = Array.isArray(r.entityIds)?r.entityIds:[];r.articleId ||= '';r.published = r.published!==false;});
