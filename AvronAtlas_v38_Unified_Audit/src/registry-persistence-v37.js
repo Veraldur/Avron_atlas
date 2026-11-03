@@ -1,0 +1,9 @@
+(()=>{'use strict';
+ const DB='avron-world-v37', STORE='data', KEY='current';let dbPromise=null,queue=Promise.resolve(),rev=0;
+ function db(){if(dbPromise)return dbPromise;dbPromise=new Promise((resolve,reject)=>{if(!indexedDB)return reject(Error('IndexedDB недоступен'));const req=indexedDB.open(DB,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(STORE))req.result.createObjectStore(STORE)};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||Error('Ошибка IndexedDB'));});return dbPromise}
+ async function get(){const conn=await db();return new Promise((resolve,reject)=>{const tx=conn.transaction(STORE,'readonly'),r=tx.objectStore(STORE).get(KEY);r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error)})}
+ async function put(snapshot){const conn=await db();return new Promise((resolve,reject)=>{const tx=conn.transaction(STORE,'readwrite');tx.objectStore(STORE).put(snapshot,KEY);tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error||Error('Ошибка записи'));tx.onabort=()=>reject(tx.error||Error('Запись отменена'));})}
+ function save(world){if(!world)return Promise.resolve(false);const snapshot=structuredClone?structuredClone(world):JSON.parse(JSON.stringify(world)),n=++rev;queue=queue.catch(()=>{}).then(()=>put(snapshot)).then(()=>{if(n===rev&&window.S){S.saveError='';S.unsaved=false;window.renderStatus?.()}return true}).catch(err=>{if(window.S){S.saveError='Не удалось сохранить мир: '+err.message+' — экспортируйте JSON';window.renderStatus?.()}throw err});return queue}
+ async function restore(){try{return await get()}catch(err){console.warn('Avron IndexedDB restore:',err);return null}}
+ window.AvronPersistence={save,restore,flush:()=>queue.catch(()=>false)};
+})();

@@ -1,0 +1,793 @@
+{
+  "schemaVersion": 3,
+  "id": "avron-demo",
+  "name": "Аврон — демо",
+  "types": [
+    {
+      "id": "t-loc",
+      "name": "Локация",
+      "color": "#e5bd62",
+      "glyph": "⌖",
+      "geometry": "point",
+      "quick": false,
+      "fields": [
+        {
+          "id": "f-pop",
+          "label": "Население",
+          "kind": "number"
+        },
+        {
+          "id": "f-kind",
+          "label": "Вид",
+          "kind": "select",
+          "options": [
+            "город",
+            "село",
+            "крепость",
+            "руины"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "t-char",
+      "name": "Персонаж",
+      "color": "#83b6dc",
+      "glyph": "♙",
+      "geometry": "point",
+      "quick": false,
+      "fields": [
+        {
+          "id": "f-race",
+          "label": "Раса",
+          "kind": "text"
+        },
+        {
+          "id": "f-role",
+          "label": "Роль",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "t-event",
+      "name": "Событие",
+      "color": "#db8d7c",
+      "glyph": "✧",
+      "geometry": "point",
+      "quick": false,
+      "fields": [
+        {
+          "id": "f-date",
+          "label": "Дата",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "t-note",
+      "name": "Заметка",
+      "color": "#e3d9bb",
+      "glyph": "▤",
+      "geometry": "point",
+      "quick": true,
+      "fields": []
+    },
+    {
+      "id": "t-region",
+      "name": "Регион",
+      "color": "#7fc4a0",
+      "glyph": "▧",
+      "geometry": "area",
+      "quick": false,
+      "fields": [
+        {
+          "id": "f-ruler",
+          "label": "Правитель",
+          "kind": "text"
+        },
+        {
+          "id": "f-hostile",
+          "label": "Опасный",
+          "kind": "checkbox"
+        }
+      ]
+    }
+  ],
+  "relationTypes": [
+    {
+      "id": "r-in",
+      "name": "Находится в",
+      "reverse": "Содержит",
+      "directed": true,
+      "color": "#9fc7a5"
+    },
+    {
+      "id": "r-rule",
+      "name": "Правит",
+      "reverse": "Под властью",
+      "directed": true,
+      "color": "#e5bd62"
+    },
+    {
+      "id": "r-ally",
+      "name": "Союзник",
+      "reverse": "",
+      "directed": false,
+      "color": "#83b6dc"
+    },
+    {
+      "id": "r-foe",
+      "name": "Враг",
+      "reverse": "",
+      "directed": false,
+      "color": "#db8d7c"
+    }
+  ],
+  "maps": [
+    {
+      "id": "main",
+      "name": "Аврон",
+      "src": "assets/avron-map.jpg",
+      "width": 2048,
+      "height": 1536,
+      "parentId": ""
+    },
+    {
+      "id": "anka",
+      "name": "Долина Анки",
+      "src": "",
+      "width": 2048,
+      "height": 1536,
+      "parentId": "main"
+    },
+    {
+      "id": "hills",
+      "name": "Золотые Холмы",
+      "src": "",
+      "width": 2048,
+      "height": 1536,
+      "parentId": "main"
+    }
+  ],
+  "entities": [
+    {
+      "id": "a-anka",
+      "mapId": "main",
+      "typeId": "t-region",
+      "name": "Долина Анки",
+      "summary": "Длинный полуостров на востоке, тёплые долины и рыбацкие порты.",
+      "body": "Узкая вытянутая земля, где горы подходят вплотную к морю.\nГлавный порт — [[Порт Анки]]. Здесь же ходят слухи о [[Тайник контрабандистов]].",
+      "tags": [
+        "восток"
+      ],
+      "fields": {
+        "f-ruler": "Совет портов"
+      },
+      "image": "",
+      "linkMapId": "anka",
+      "secret": false,
+      "draft": false,
+      "points": [
+        [
+          1323,
+          484
+        ],
+        [
+          1533,
+          428
+        ],
+        [
+          1751,
+          347
+        ],
+        [
+          1929,
+          323
+        ],
+        [
+          1961,
+          428
+        ],
+        [
+          1856,
+          565
+        ],
+        [
+          1614,
+          621
+        ],
+        [
+          1420,
+          638
+        ],
+        [
+          1323,
+          557
+        ]
+      ]
+    },
+    {
+      "id": "a-hills",
+      "mapId": "main",
+      "typeId": "t-region",
+      "name": "Золотые Холмы",
+      "summary": "Плодородные холмы с древней столицей.",
+      "body": "Сердце старого королевства. Правит здесь [[Лорд-смотритель]] из [[Золотая Цитадель|Золотой Цитадели]].",
+      "tags": [
+        "север"
+      ],
+      "fields": {
+        "f-ruler": "Лорд-смотритель"
+      },
+      "image": "",
+      "linkMapId": "hills",
+      "secret": false,
+      "draft": false,
+      "points": [
+        [
+          718,
+          153
+        ],
+        [
+          904,
+          97
+        ],
+        [
+          1130,
+          194
+        ],
+        [
+          1186,
+          331
+        ],
+        [
+          1049,
+          395
+        ],
+        [
+          839,
+          331
+        ],
+        [
+          726,
+          234
+        ]
+      ]
+    },
+    {
+      "id": "a-desert",
+      "mapId": "main",
+      "typeId": "t-region",
+      "name": "Плавающая Пустыня",
+      "summary": "Дюны, которые никогда не лежат на одном месте.",
+      "body": "Область без детальной карты — просто статья. Нажатие на неё в режиме просмотра только выделяет её.",
+      "tags": [
+        "юг",
+        "опасность"
+      ],
+      "fields": {
+        "f-hostile": true
+      },
+      "image": "",
+      "linkMapId": "",
+      "secret": false,
+      "draft": false,
+      "points": [
+        [
+          331,
+          759
+        ],
+        [
+          533,
+          783
+        ],
+        [
+          726,
+          872
+        ],
+        [
+          904,
+          952
+        ],
+        [
+          1073,
+          1114
+        ],
+        [
+          1033,
+          1210
+        ],
+        [
+          839,
+          1162
+        ],
+        [
+          613,
+          1033
+        ],
+        [
+          387,
+          912
+        ],
+        [
+          323,
+          807
+        ]
+      ]
+    },
+    {
+      "id": "p-cit",
+      "mapId": "main",
+      "typeId": "t-loc",
+      "name": "Золотая Цитадель",
+      "summary": "Белые стены на золотом холме.",
+      "body": "Резиденция [[Лорд-смотритель|Лорда-смотрителя]].",
+      "tags": [
+        "столица"
+      ],
+      "fields": {
+        "f-pop": 12000,
+        "f-kind": "крепость"
+      },
+      "image": "",
+      "linkMapId": "",
+      "secret": false,
+      "draft": false,
+      "x": 880,
+      "y": 274
+    },
+    {
+      "id": "p-lord",
+      "mapId": "main",
+      "typeId": "t-char",
+      "name": "Лорд-смотритель",
+      "summary": "Хранитель Золотых Холмов.",
+      "body": "",
+      "tags": [
+        "правитель"
+      ],
+      "fields": {
+        "f-race": "человек",
+        "f-role": "правитель"
+      },
+      "image": "",
+      "linkMapId": "",
+      "secret": false,
+      "draft": false,
+      "x": 1010,
+      "y": 300
+    },
+    {
+      "id": "p-port",
+      "mapId": "main",
+      "typeId": "t-loc",
+      "name": "Порт Анки",
+      "summary": "Шумный порт. Нажмите «Перейти на карту».",
+      "body": "",
+      "tags": [
+        "порт"
+      ],
+      "fields": {
+        "f-pop": 4300,
+        "f-kind": "город"
+      },
+      "image": "",
+      "linkMapId": "anka",
+      "secret": false,
+      "draft": false,
+      "x": 1500,
+      "y": 500
+    },
+    {
+      "id": "p-smug",
+      "mapId": "main",
+      "typeId": "t-loc",
+      "name": "Тайник контрабандистов",
+      "summary": "Скрыт в режиме просмотра, пока не включены секреты.",
+      "body": "",
+      "tags": [
+        "секрет"
+      ],
+      "fields": {
+        "f-kind": "руины"
+      },
+      "image": "",
+      "linkMapId": "",
+      "secret": true,
+      "draft": false,
+      "x": 1660,
+      "y": 520
+    },
+    {
+      "id": "p-battle",
+      "mapId": "main",
+      "typeId": "t-event",
+      "name": "Битва у Переправы",
+      "summary": "Событие без детальной статьи.",
+      "body": "",
+      "tags": [
+        "война"
+      ],
+      "fields": {
+        "f-date": "312 г."
+      },
+      "image": "",
+      "linkMapId": "",
+      "secret": false,
+      "draft": false,
+      "x": 1000,
+      "y": 1120
+    },
+    {
+      "id": "p-note",
+      "mapId": "main",
+      "typeId": "t-note",
+      "name": "",
+      "summary": "Тут видели дракона.\nПроверить в 3-й главе.",
+      "body": "",
+      "tags": [],
+      "fields": {},
+      "image": "",
+      "linkMapId": "",
+      "secret": false,
+      "draft": false,
+      "x": 1300,
+      "y": 960
+    },
+    {
+      "id": "p-note2",
+      "mapId": "main",
+      "typeId": "t-note",
+      "name": "",
+      "summary": "Спросить мастера про этот перевал.",
+      "body": "",
+      "tags": [],
+      "fields": {},
+      "image": "",
+      "linkMapId": "",
+      "secret": false,
+      "draft": false,
+      "x": 520,
+      "y": 640
+    },
+    {
+      "id": "p-pier",
+      "mapId": "anka",
+      "typeId": "t-loc",
+      "name": "Причал",
+      "summary": "Объект на детальной карте. Карта пока пустой холст.",
+      "body": "",
+      "tags": [],
+      "fields": {},
+      "image": "",
+      "linkMapId": "",
+      "secret": false,
+      "draft": false,
+      "x": 900,
+      "y": 700
+    },
+    {
+      "id": "p-inn",
+      "mapId": "anka",
+      "typeId": "t-loc",
+      "name": "Трактир «Сельдь»",
+      "summary": "Здесь собираются капитаны.",
+      "body": "",
+      "tags": [],
+      "fields": {
+        "f-kind": "село"
+      },
+      "image": "",
+      "linkMapId": "",
+      "secret": false,
+      "draft": false,
+      "x": 1150,
+      "y": 820
+    },
+    {
+      "id": "p-hall",
+      "mapId": "hills",
+      "typeId": "t-loc",
+      "name": "Зал совета",
+      "summary": "Детальная карта Золотых Холмов.",
+      "body": "",
+      "tags": [],
+      "fields": {},
+      "image": "",
+      "linkMapId": "",
+      "secret": false,
+      "draft": false,
+      "x": 1000,
+      "y": 760
+    },
+    {
+      "id": "p-queenslayers",
+      "mapId": "main",
+      "typeId": "t-event",
+      "name": "УБИЙЦЫ КОРОЛЕВ",
+      "summary": "748 Н.Р. · Нажмите в режиме просмотра, чтобы открыть момент истории.",
+      "body": "Ключевой узел истории северных владений.",
+      "tags": [
+        "хронология",
+        "кризис"
+      ],
+      "fields": {
+        "f-date": "748 Н.Р."
+      },
+      "image": "",
+      "linkMapId": "",
+      "secret": false,
+      "draft": false,
+      "x": 1188,
+      "y": 254,
+      "timelineEventId": "ev-queen-assassins"
+    }
+  ],
+  "relations": [
+    {
+      "id": "3642e16b",
+      "from": "p-lord",
+      "to": "p-cit",
+      "typeId": "r-rule",
+      "note": ""
+    },
+    {
+      "id": "25ad4247",
+      "from": "p-cit",
+      "to": "a-hills",
+      "typeId": "r-in",
+      "note": ""
+    },
+    {
+      "id": "79424638",
+      "from": "p-port",
+      "to": "a-anka",
+      "typeId": "r-in",
+      "note": ""
+    },
+    {
+      "id": "17d37eea",
+      "from": "p-lord",
+      "to": "p-smug",
+      "typeId": "r-foe",
+      "note": ""
+    },
+    {
+      "id": "16ffb066",
+      "from": "p-port",
+      "to": "p-cit",
+      "typeId": "r-ally",
+      "note": ""
+    }
+  ],
+  "libraries": [
+    {
+      "id": "library-main",
+      "name": "Основная библиотека"
+    },
+    {
+      "id": "library-history",
+      "name": "Хроники Аврона"
+    }
+  ],
+  "folders": [
+    {
+      "id": "folder-history",
+      "name": "История",
+      "libraryId": "library-history",
+      "parentId": ""
+    },
+    {
+      "id": "folder-alt",
+      "name": "Альтернативные линии",
+      "libraryId": "library-history",
+      "parentId": ""
+    }
+  ],
+  "articles": [
+    {
+      "id": "art-queen-base",
+      "title": "Убийцы Королев — 748 Н.Р.",
+      "libraryId": "library-history",
+      "folderId": "folder-history",
+      "draft": false,
+      "tags": [
+        "история",
+        "кризис"
+      ],
+      "body": "# Убийцы Королев\n\nВ 748 году Новой Ревизии двор северных владений содрогнулся от серии точных ударов. Две королевы-сестры были убиты в одну и ту же ночь, а их дома обвинили друг друга в заговоре.\n\n## Последствия\n\n- Золотые Холмы закрыли перевалы.\n- В Долине Анки началась охота на гонцов.\n- В столицах появились ложные манифесты, выдаваемые за королевские указы.\n\n> С этого дня говорят не о войне, а о трещине в самой идее престола.\n\n[[Золотая Цитадель]] стала местом экстренного совета."
+    },
+    {
+      "id": "art-queen-alt",
+      "title": "Убийцы Королев — ветвь «Красный Договор»",
+      "libraryId": "library-history",
+      "folderId": "folder-alt",
+      "draft": false,
+      "tags": [
+        "альтернативная история"
+      ],
+      "body": "# Красный Договор\n\nВ альтернативной ветви покушение не разрушает союз сразу. Вместо открытой мести северные дворы идут на тайную сделку, известную как **Красный Договор**.\n\n## Отличия ветви\n\n- убийцы оказываются орудием третьей силы;\n- Анка получает право на посредничество;\n- часть крепостей Золотых Холмов остаётся открытой.\n\nИстория мира в этой ветви смещается от гражданской войны к затяжной холодной интриге."
+    },
+    {
+      "id": "art-belief-experiment",
+      "title": "Опыт веры: Буря и Призма",
+      "libraryId": "library-history",
+      "folderId": "folder-alt",
+      "draft": false,
+      "tags": [
+        "матрица",
+        "пример"
+      ],
+      "body": "# Опыт веры: Буря и Призма\n\n*Это учебная запись для тестирования матрицы, а не утверждённый лор мира.*\n\nПредставим исследователя, который сравнивает образы **Аксаара** и **Каллейдоиллюмиллона**: молния превращает ночь в мгновение ясности, а призматический свет дробит единое видение на множество.\n\n## Что может означать сочетание\n\n- Культ или философская школа, различающая откровение и иллюзию.\n- Страну, где сосуществуют разные традиции.\n- Спор двух толкований истории.\n\nМесто для примера — [[Золотая Цитадель]]. Нажмите на ссылку и проверьте Finder.\n\n**Можно изменить статью, тип пересечения и связанные объекты в редакторе Матрицы.**"
+    }
+  ],
+  "timeline": {
+    "calendars": [
+      {
+        "id": "cal-avron",
+        "name": "Календарь Аврона",
+        "months": [
+          {
+            "id": "m-snow",
+            "name": "Снежник",
+            "days": 27
+          },
+          {
+            "id": "m-thaw",
+            "name": "Талый",
+            "days": 31
+          },
+          {
+            "id": "m-bloom",
+            "name": "Цветень",
+            "days": 29
+          },
+          {
+            "id": "m-sun",
+            "name": "Солнцеворот",
+            "days": 33
+          },
+          {
+            "id": "m-harvest",
+            "name": "Жатва",
+            "days": 28
+          },
+          {
+            "id": "m-rain",
+            "name": "Ливневик",
+            "days": 30
+          }
+        ],
+        "moons": [
+          "Аурис",
+          "Вейла",
+          "Кес",
+          "Орма",
+          "Терн",
+          "Шиар"
+        ]
+      }
+    ],
+    "eras": [
+      {
+        "id": "era-nr",
+        "name": "Новая Ревизия",
+        "short": "Н.Р."
+      }
+    ],
+    "campaigns": [
+      {
+        "id": "camp-queens",
+        "name": "Северный раскол",
+        "calendarId": "cal-avron",
+        "eraId": "era-nr",
+        "description": "Прототип кампании с основной и альтернативной линией.",
+        "routes": [
+          {
+            "id": "route-main",
+            "name": "Основная линия",
+            "kind": "prime"
+          },
+          {
+            "id": "route-red",
+            "name": "Красный Договор",
+            "kind": "branch"
+          }
+        ],
+        "eventIds": [
+          "ev-queen-assassins"
+        ]
+      }
+    ],
+    "events": [
+      {
+        "id": "ev-queen-assassins",
+        "campaignId": "camp-queens",
+        "title": "Убийцы Королев",
+        "slug": "Пролог кризиса",
+        "summary": "Две смерти за одну ночь меняют политическую карту севера.",
+        "year": 748,
+        "monthId": "m-rain",
+        "day": 12,
+        "entityId": "p-queenslayers",
+        "mapId": "main",
+        "articleId": "art-queen-base",
+        "art": "./pantheon/art/19.png",
+        "focus": {
+          "x": 0.58,
+          "y": 0.18,
+          "zoom": 3.1
+        },
+        "moons": [
+          "Аурис",
+          "Кес",
+          "Шиар"
+        ],
+        "routeDefaults": [
+          {
+            "id": "var-red",
+            "routeId": "route-red",
+            "name": "Красный Договор",
+            "summary": "Ветка, где после убийств стороны не срываются в открытую войну.",
+            "articleId": "art-queen-alt",
+            "art": "./pantheon/art/13.png",
+            "focus": {
+              "x": 0.61,
+              "y": 0.22,
+              "zoom": 3
+            },
+            "crop": {
+              "x": 0.49,
+              "y": 0.14,
+              "w": 0.24,
+              "h": 0.18
+            },
+            "motion": "glide",
+            "duration": 8
+          }
+        ],
+        "crop": {
+          "x": 0.45,
+          "y": 0.1,
+          "w": 0.28,
+          "h": 0.21
+        },
+        "motion": "slow",
+        "duration": 7
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "pantheon",
+      "name": "Пантеон",
+      "icon": "✧",
+      "layout": "encyclopedia",
+      "entries": []
+    }
+  ],
+  "media": {
+    "music": "",
+    "musicName": ""
+  },
+  "pantheon": [],
+  "chronicles": [],
+  "beliefMatrix": [
+    {
+      "id": "belief-demo-prism-storm",
+      "title": "Буря и Призма · пример",
+      "kind": "Исследовательская гипотеза",
+      "notes": "Учебный пример пересечения, который можно редактировать или удалить. Не канон.",
+      "godIds": [
+        8,
+        19
+      ],
+      "articleId": "art-belief-experiment",
+      "entityIds": [
+        "p-cit"
+      ]
+    }
+  ],
+  "autoWikiLinks": true
+}

@@ -1,0 +1,8 @@
+{
+  "name": "avron-world-editor-m4",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Phaser Editor environment project, matching M4 structure",
+  "scripts": {},
+  "dependencies": {}
+}

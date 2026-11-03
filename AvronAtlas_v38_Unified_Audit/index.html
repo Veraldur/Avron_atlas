@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>World Editor — карта кампании</title>
+<link rel="stylesheet" href="./src/style.css">
+<link rel="stylesheet" href="./src/map-widgets.css">
+<link rel="stylesheet" href="./src/creative-studio.css">
+<link rel="stylesheet" href="./pantheon/pantheon.css">
+<link rel="stylesheet" href="./pantheon/cinematic.css">
+<link rel="stylesheet" href="./pantheon/editor.css">
+<link rel="stylesheet" href="./pantheon/library.css">
+<link rel="stylesheet" href="./src/avron-atmosphere.css">
+<link rel="stylesheet" href="./src/showcase-builder.css">
+<link rel="stylesheet" href="./src/showcase-packs.css">
+<link rel="stylesheet" href="./src/showcase-ornaments-v21.css">
+<link rel="stylesheet" href="./src/showcase-art-direction-v23.css">
+<link rel="stylesheet" href="./src/aether-interface-v3.css">
+<link rel="stylesheet" href="./src/aether-interface-v5.css">
+<link rel="stylesheet" href="./src/avron-hub-v6.css">
+<link rel="stylesheet" href="./src/avron-unified-v7.css">
+<link rel="stylesheet" href="./src/avron-slots-v8.css">
+<link rel="stylesheet" href="./src/avron-popup-designer.css">
+<link rel="stylesheet" href="./src/avron-popup-v15.css">
+<link rel="stylesheet" href="./src/avron-chronicle-v18.css">
+<link rel="stylesheet" href="./src/unified-halls-v22.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">✦</span><div><strong>AVRON ATLAS</strong><small>АТЛАС МИРОВ · ХРАНИЛИЩЕ ИСТОРИЙ</small></div></div>
+    <nav class="world-nav" id="worldNav"><button class="on" data-screen="map">Карта</button><button data-screen="encyclopedia">Энциклопедия</button><button data-screen="timeline">Хронология</button><span id="customNav"></span><button id="addSectionNav" class="mini only-edit">＋ Раздел</button></nav>
+    <div class="toolbar">
+      <button id="btnNew">Новый</button>
+      <button id="btnDemo">Демо-мир</button>
+      <button id="btnLoad">Загрузить JSON</button>
+      <button id="btnSave" class="primary">Сохранить JSON</button>
+      <input id="worldFile" type="file" accept=".json,application/json" hidden>
+    </div>
+    <div class="status" id="status"></div>
+  </header>
+
+  <div id="sectionScreen" class="section-screen" hidden></div>
+  <div class="workspace" id="workspace">
+    <aside class="left">
+      <section class="panel-section">
+        <div class="section-heading">КАРТЫ <button class="mini only-edit" id="addMap">＋ Карта</button></div>
+        <div id="mapTree" class="map-tree"></div>
+        <div id="mapProps" class="map-props only-edit"></div>
+      </section>
+
+      <section class="panel-section only-edit">
+        <div class="section-heading">ИНСТРУМЕНТЫ</div>
+        <div id="toolGrid" class="tool-grid"></div>
+        <p class="hint" id="toolHint"></p>
+      </section>
+
+      <section class="panel-section">
+        <div class="section-heading">ФИЛЬТР ПО ТИПАМ <span><button class="mini" id="typesAll">все</button> <button class="mini" id="typesNone">ничего</button></span></div>
+        <div id="typeFilters" class="chips"></div>
+        <label class="check only-edit"><input id="optRel" type="checkbox" checked> Показывать связи</label>
+        <label class="check"><input id="optLabels" type="checkbox" checked> Подписи</label>
+        <label class="check"><input id="optGrid" type="checkbox"> Сетка</label>
+        <label class="check only-read"><input id="optSecrets" type="checkbox"> Секреты открыты (проверка)</label>
+      </section>
+
+      <section class="panel-section only-edit">
+        <div class="section-heading">МИР</div>
+        <label class="field"><span class="fl">Название</span><input id="worldName" class="inp"></label>
+        <label class="field"><span class="fl">ID (имя файла)</span><input id="worldId" class="inp"></label>
+      </section>
+      <section class="panel-section only-edit">
+        <div class="section-heading">МУЗЫКА МИРА</div>
+        <div id="musicName" class="mini-info">Музыка не выбрана</div>
+        <div class="btn-row"><button id="musicChoose" class="mini">Выбрать аудио…</button><button id="musicPlay" class="mini">▶ Проверить</button><button id="musicStop" class="mini">■ Стоп</button></div>
+        <input id="musicFile" type="file" accept="audio/*" hidden>
+      </section>
+    </aside>
+
+    <main class="map-area">
+      <div id="game-container"></div><div id="mapPopupLayer" class="map-popup-layer"></div>
+      <div class="hud-top">
+        <div id="crumbs" class="crumbs"></div>
+        <div class="seg"><button id="modeEdit" class="on">Редактор</button><button id="modeRead">Просмотр</button></div>
+        <span class="hud-chip" id="coords">X — · Y —</span>
+      </div>
+      <div id="tip"></div>
+      <div id="floatBar" class="float-bar"></div>
+      <div class="map-footer"><span id="countInfo"></span><span id="hintInfo"></span><span><button class="mini" id="fitBtn">вписать</button> <span id="zoomInfo">100%</span></span></div>
+    </main>
+
+    <aside class="right">
+      <div class="tabs">
+        <button data-tab="object" class="on">Объект</button>
+        <button data-tab="lib">Библиотека</button>
+        <button data-tab="types" class="only-edit">Типы</button>
+      </div>
+      <div id="tabObject" class="tab-body"></div>
+      <div id="tabLib" class="tab-body" hidden>
+        <input id="q" class="inp" placeholder="⌕ Поиск: имя, текст, тег, тип…">
+        <div class="mini-info" id="libCount"></div>
+        <div id="libList" class="lib-list"></div>
+      </div>
+      <div id="tabTypes" class="tab-body" hidden></div>
+    </aside>
+  </div>
+</div>
+
+<script src="./phaser.js"></script>
+<script src="./marked.js"></script>
+<script src="./src/model.js"></script>
+<script src="./src/scene.js"></script>
+<script src="./src/ui.js"></script>
+<script src="./src/default-world-current.js"></script>
+<script src="./src/registry-persistence-v37.js"></script><script src="./src/main.js"></script>
+<script src="./src/lore-store.js"></script>
+<script src="./src/frame-engine.js"></script>
+<script src="./src/chronicle-links.js"></script>
+<script src="./src/timeline.js"></script>
+<script src="./src/creative-studio.js"></script>
+<script src="./pantheon/pantheon.js"></script>
+<script src="./pantheon/cinematic.js"></script>
+<script src="./pantheon/editor.js"></script>
+<script src="./pantheon/library.js"></script>
+<script src="./src/map-widgets.js"></script>
+<script src="./src/showcase-builder.js"></script>
+<script src="./src/aether-interface-v3.js"></script>
+<script src="./src/avron-hub-v6.js"></script>
+<script src="./src/avron-slots-v8.js"></script>
+<link rel="stylesheet" href="./src/world-studio-v11.css"><script src="./src/world-studio-v11.js"></script>
+<link rel="stylesheet" href="./src/unified-atelier-v13.css"><script src="./src/unified-atelier-v13.js"></script>
+<link rel="stylesheet" href="./src/avron-director-v14.css"><!-- Legacy scene director retired. -->
+<!-- Legacy scene teaser retired. -->
+<script src="./src/avron-chronicle-v18.js"></script>
+<link rel="stylesheet" href="./src/scene-bridge-v20.css">
+<!-- Scene director retired in v24; chronicle content retained in world JSON. -->
+<script src="./src/unified-halls-v22.js"></script>
+<link rel="stylesheet" href="./src/avron-halls-manager-v25.css"><script src="./src/avron-halls-manager-v25.js"></script>
+<link rel="stylesheet" href="./src/avron-console-v26.css"><script src="./src/avron-console-v26.js"></script>
+<link rel="stylesheet" href="./src/adventure-rooms-v27.css"><script src="./src/adventure-rooms-v27.js"></script>
+<link rel="stylesheet" href="./src/city-explorer-v29.css"><script src="./src/city-explorer-v29.js"></script>
+<link rel="stylesheet" href="./src/navigation-core-v30.css"><script src="./src/navigation-core-v30.js"></script>
+<link rel="stylesheet" href="./src/offline-v31.css"><script src="./src/offline-v31.js"></script>
+<link rel="stylesheet" href="./src/relicary-v32.css"><script src="./src/relicary-v32.js"></script>
+<link rel="stylesheet" href="./src/writer-advisor-v33.css"><script src="./src/avron-idea-engine-v34.js"></script><script src="./src/avron-idea-engine-v35.js"></script><script src="./src/writer-advisor-v33.js"></script>
+<link rel="stylesheet" href="./src/lore-workshop-v36.css"><script src="./src/lore-workshop-v36.js"></script>
+<link rel="stylesheet" href="./src/material-registry-v37.css"><script src="./src/material-registry-v37.js"></script>
+<script src="./src/unified-material-core-v38.js"></script>
+<script src="./src/archive-upgrade-v38.js"></script>
+</body>
+</html>

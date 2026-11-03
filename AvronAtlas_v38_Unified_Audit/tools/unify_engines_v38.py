@@ -1,0 +1,40 @@
+from pathlib import Path
+import re
+ROOT=Path(__file__).resolve().parents[1]
+def change(path,old,new,expected=1):
+ p=ROOT/path; s=p.read_text(encoding='utf-8'); n=s.count(old)
+ if n!=expected:
+  if new in s:return
+  raise RuntimeError(f'{path}: expected {expected}, got {n} for {old[:90]}')
+ p.write_text(s.replace(old,new),encoding='utf-8')
+def regex(path,pat,repl):
+ p=ROOT/path;s=p.read_text(encoding='utf-8');new,n=re.subn(pat,repl,s,flags=re.S)
+ if n!=1:raise RuntimeError(f'{path}: regex count={n} {pat[:100]}')
+ p.write_text(new,encoding='utf-8')
+# A canonical index handles every supported registered kind, including synthetic exhibits and lore records.
+change('src/material-registry-v37.js',"if(path==='sections.entries')return (W()?.sections||[]).flatMap(s=>s.entries||[]);return path.split('.').reduce((v,k)=>v?.[k],W())||[];", "if(path==='sections.entries')return (W()?.sections||[]).flatMap(s=>s.entries||[]);if(path==='timeline.events')return [...(W()?.timeline?.events||[]),...(W()?.timeline?.tracks||[]).flatMap(t=>t.events||[])];return path.split('.').reduce((v,k)=>v?.[k],W())||[];")
+change('src/material-registry-v37.js','window.AvronRegistry={all,item,ref,parents,setParents,audit,create,createDialog,editDialog,mountArticle,appendDraft,openDrafts};', 'window.AvronRegistry={all,item,collection,ref,parents,setParents,audit,create,createDialog,editDialog,mountArticle,appendDraft,openDrafts};')
+# Nav no longer has a separate item lookup or generator; register engines, not duplicate stores.
+regex('src/navigation-core-v30.js',r'function item\(k,id\)\{.*?\}\nfunction valid\(k,id\)',"function item(k,id){return window.AvronRegistry?.item?.(k+':'+id)||null}\nfunction valid(k,id)")
+regex('src/navigation-core-v30.js',r'function all\(\)\{.*?\}\nfunction link\(', "function all(){return (window.AvronRegistry?.all?.()||[]).filter(x=>S.mode==='edit'||(x.kind!=='article'||!item('article',x.id)?.draft)).map(x=>({kind:x.kind,id:x.id,name:x.title}));}\nfunction link(")
+regex('src/navigation-core-v30.js',r'function link\(fromRef,toRef,label=.*?\}\nfunction unlink\(f,t\).*?\nfunction audit\(', "function link(fromRef,toRef,label=''){if(S.mode!=='edit')throw Error('Только Редактор');const done=window.AvronMaterials?.attach?.(fromRef,toRef,{label});if(!done)throw Error('Ссылка не создана: материал отсутствует');return routes()[key(canonical(fromRef).kind,canonical(fromRef).id)]}\nfunction unlink(f,t){window.AvronMaterials?.detach?.(f,t);}\nfunction audit(")
+regex('src/navigation-core-v30.js',r'function create\(kind,src\)\{.*?\n\}\nfunction objectActions\(', "function create(kind,src){if(S.mode!=='edit')throw Error('Только Редактор');const parents=src?[key(src.kind,src.id)]:[];const obj=window.AvronMaterials?.create?.(kind,{title:({article:'Новая статья',node:'Новое место',showcase:'Новая витрина',room:'Новое приключение'})[kind]||'Новый материал',parents,entityId:src?.kind==='entity'?src.id:''});if(!obj)throw Error('Создание материала не удалось');lastStatus='Создано: '+title(obj);return obj;}\nfunction objectActions(")
+# Use unified core when creating map articles (old quick button bypassed source IDs).
+change('src/ui.js',"if(!a){a={id:uid(),title:e.name||'Новая статья',body:e.body||'',folderId:'',libraryId:'library-main',createdAt:Date.now()};S.world.articles.push(a);e.articleId=a.id;}","if(!a){a=window.AvronMaterials?.create?.('article',{title:e.name||'Новая статья',parents:['entity:'+e.id]});if(!a)return;e.articleId=a.id;}")
+# Finder title indexes aliases, but resolving collisions never picks an arbitrary first result.
+change('src/ui.js',"(w.articles||[]).filter(a=>S.mode!=='read'||(a.lockedByPuzzle?window.AvronRelicary?.unlockedArticle(a):!a.draft)).forEach(a=>add({kind:'article',id:a.id,title:a.title,record:a,body:canon(a.body||'')}));", "(w.articles||[]).filter(a=>S.mode!=='read'||(a.lockedByPuzzle?window.AvronRelicary?.unlockedArticle(a):!a.draft)).forEach(a=>{const row={kind:'article',id:a.id,title:a.title,record:a,body:canon(a.body||'')};add(row);for(const alias of a.sourceAliases||[]){const k=canon(alias);if(k&&k!==canon(a.title)){const xs=map.get(k)||[];if(!xs.some(x=>x.id===a.id&&x.kind==='article'))xs.push(row);map.set(k,xs);}}});")
+change('src/ui.js',"function navigate(name){if(String(name).startsWith('id:')){const id=String(name).slice(3);const a=(S.world.articles||[]).find(x=>x.id===id&&(S.mode!=='read'||!x.draft));if(a)return openResult({kind:'article',id:a.id,title:a.title,record:a});}const results=matches(name);const exact=results.find(x=>canon(x.title)===canon(name));if(exact)openResult(exact);else open(name);}", "function navigate(name){if(String(name).startsWith('id:')){const id=String(name).slice(3);const a=(S.world.articles||[]).find(x=>x.id===id&&(S.mode!=='read'||!x.draft));if(a)return openResult({kind:'article',id:a.id,title:a.title,record:a});}const results=matches(name);const exact=results.filter(x=>canon(x.title)===canon(name));if(exact.length===1)openResult(exact[0]);else open(name);}")
+# World Studio creation from the same shared facade.
+regex('src/world-studio-v11.js',r'function build\(type\)\{.*?\nfunction books\(', "function build(type){if(!edit())return;ensure();const name=prompt('Название нового раздела',type==='book'?'Новые летописи':type==='section'?'Новый раздел':'Новая галерея');if(!name?.trim())return;let obj=null;if(type==='book'){obj=window.AvronMaterials?.create?.('book',{title:name.trim()});if(obj)currentBook=obj.id;}else if(type==='section'){obj=window.AvronMaterials?.create?.('section',{title:name.trim()});currentBook='';}else{const country=type==='countries'?(w().types||[]).find(t=>t.name==='Страна'):null;obj=window.AvronMaterials?.create?.('showcase',{title:name.trim(),typeId:country?.id||'',layout:'gallery'});if(obj){obj.ratio=country?'landscape':'portrait';close();save();window.AvronShowcase?.open(obj.id,true);return;}}if(!obj){alert('Создание не удалось: реестр не готов');return;}save();render();}\nfunction books(")
+# Keep all inputs routed via canonical article creation.
+change('src/ui.js',"const existing=articleFor(title);", "const exactMatches=window.AvronMaterials?.titleLookup?.(title,{kind:'article'})||[];const existing=exactMatches.length===1?articleFor(title):null;")
+# Chronicle book add existing event/record uses explicit graph too.
+change('src/world-studio-v11.js',"b.eventIds.push(id);save();render()", "b.eventIds.push(id);window.AvronMaterials?.attach?.('book:'+b.id,'entity:'+id);save();render()")
+# Adventure room is the same canonical room record, not a private constructor.
+change('src/adventure-rooms-v27.js',"let r={id:'adv-'+Date.now().toString(36),kind:story?'story':'dungeon',name:story?'Новое сюжетное приключение':'Новое подземелье',subtitle:'',tagline:'',cover:story?'assets/adventure-rooms/gol.webp':'assets/adventure-rooms/mor.webp',theme:'aether',entityId:'',features:[],dangers:[],hooks:[],roles:[],cast:[]};rooms().push(r);changed();", "let r=window.AvronMaterials?.create?.('room',{title:story?'Новое сюжетное приключение':'Новое подземелье',roomKind:story?'story':'dungeon'});if(!r)return;r.cover=story?'assets/adventure-rooms/gol.webp':'assets/adventure-rooms/mor.webp';r.theme='aether';changed();")
+# Legacy Pantheon intersections and reader links now route through navigation.
+change('pantheon/pantheon.js',"if(a){hide();switchScreen('encyclopedia');renderEncyclopediaArticle(a)}", "if(a){hide();window.AvronNav?.open?.('article:'+a.id)}")
+change('pantheon/library.js',"if(!a)return;close();if(typeof switchScreen==='function')switchScreen('encyclopedia');if(typeof renderEncyclopediaArticle==='function')renderEncyclopediaArticle(a)","if(!a)return;close();window.AvronNav?.open?.('article:'+a.id)")
+# Avoid old inline Panth material creation and duplicate title as identity.
+change('pantheon/pantheon.js',"if(!a){a={id:'article-'+Date.now().toString(36),title,body:'',folderId:'',libraryId:S.world.libraries?.[0]?.id||'library-main',tags:[],draft:false};S.world.articles.push(a);}","if(!a){a=window.AvronMaterials?.create?.('article',{title,parents:['lore:'+r.id],draft:false});if(!a)return;}")
+print('Unified adapter entry points patched')

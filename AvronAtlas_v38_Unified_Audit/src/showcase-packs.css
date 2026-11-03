@@ -1,0 +1,48 @@
+/* AvronAtlas XIX — artwork-driven atmosphere packs. Scoped entirely to Showcase UI. */
+.avron-showcase .sh-pack-picker{margin:0 0 28px;padding:18px 20px;background:#0b1428e8;border:1px solid #bd9f7180;border-radius:12px}
+.sh-pack-heading{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:14px;color:#e9c998}.sh-pack-heading strong{font:700 12px Arial,sans-serif;letter-spacing:.2em}.sh-pack-heading span{font:12px Arial,sans-serif;color:#aab9cb}
+.sh-pack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px}.avron-showcase .sh-pack-tile{display:flex;flex-direction:column;align-items:stretch;text-align:left;padding:6px;gap:7px;border:1px solid #94795377;border-radius:9px;min-width:0;background:#142139;transition:transform .2s,border-color .2s}.avron-showcase .sh-pack-tile:hover{transform:translateY(-3px)}.avron-showcase .sh-pack-tile.selected{border-color:#f8d797;box-shadow:0 0 0 2px #f1cf8140,inset 0 0 22px #deb86e1e}.sh-pack-tile img,.sh-pack-thumb{display:block;width:100%;height:84px;object-fit:cover;border-radius:5px}.sh-pack-thumb{display:grid;place-items:center;font-size:34px;background:radial-gradient(#456288,#0a1126);color:#e9c998}.sh-pack-tile strong{font:600 12px/1.3 Arial,sans-serif;color:#fbebd1;padding:0 4px}.sh-pack-tile small{font:10px/1.45 Arial,sans-serif;color:#b4becd;padding:0 4px 5px}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]){--pack-gold:#efd9aa;--pack-secondary:#9adad1;--pack-dark:#101b2c;--pack-art:none;--pack-ink:#f5eadd;color:var(--pack-ink);background:linear-gradient(170deg,#06101cbb,var(--pack-dark) 65%),var(--pack-art) center/cover fixed}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]):before{opacity:.25;background:radial-gradient(circle at 50% 25%,transparent,#02040a 90%)}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-head{position:relative;isolation:isolate;min-height:235px;align-items:flex-end;border:1px solid color-mix(in srgb,var(--pack-gold),transparent 45%);border-radius:115px 115px 7px 7px;padding:65px 35px 25px;overflow:hidden;background:linear-gradient(0deg,var(--pack-dark),transparent 120%),var(--pack-art) center 45%/cover;box-shadow:0 24px 55px #0007,inset 0 0 0 6px #fff1}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-head:before{content:'';position:absolute;inset:7px;border:1px solid color-mix(in srgb,var(--pack-gold),transparent 40%);border-radius:110px 110px 4px 4px;pointer-events:none;z-index:-1}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-head h1{font-family:Georgia,serif;color:var(--pack-ink);text-shadow:0 3px 18px #000,0 0 42px var(--pack-secondary)}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-head h1:before{color:var(--pack-gold)}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-head small,.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-workbar small{color:var(--pack-gold);text-shadow:0 1px 6px #000}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-head p{color:#f1e9e2;text-shadow:0 2px 9px #000}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-index{background:linear-gradient(140deg,color-mix(in srgb,var(--pack-dark),black 12%),#07101bea);border-color:color-mix(in srgb,var(--pack-gold),transparent 45%)}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-index:before,.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-card:after{color:var(--pack-gold)}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-card{border:1px solid var(--pack-gold);background:var(--pack-dark);box-shadow:0 15px 45px #000a,0 0 0 4px color-mix(in srgb,var(--pack-gold),transparent 85%)}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-card:before{border-color:var(--pack-gold)}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-card-meta{background:linear-gradient(180deg,color-mix(in srgb,var(--pack-dark),var(--pack-secondary) 15%),var(--pack-dark))}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-card h3{color:var(--pack-ink)}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-card-crest{color:var(--pack-gold)}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-workbar{border-color:var(--pack-gold);background:color-mix(in srgb,var(--pack-dark),transparent 15%)}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) button:hover{border-color:var(--pack-gold)}
+.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-classic-banner{border-color:var(--pack-gold)}
+.avron-showcase[data-style-pack="spectral"]{--pack-gold:#744aff;--pack-secondary:#74eee6;--pack-dark:#080611;--pack-art:url('../assets/showcase-packs/spectral.webp')}
+.avron-showcase[data-style-pack="eden"]{--pack-gold:#cfe8ee;--pack-secondary:#a9c592;--pack-dark:#192e31;--pack-art:url('../assets/showcase-packs/eden.webp')}
+.avron-showcase[data-style-pack="sanctuary"]{--pack-gold:#f7df96;--pack-secondary:#a9dcf7;--pack-dark:#173a60;--pack-art:url('../assets/showcase-packs/sanctuary.webp')}
+.avron-showcase[data-style-pack="dreamspire"]{--pack-gold:#f4a4c5;--pack-secondary:#a4a1f7;--pack-dark:#22182b;--pack-art:url('../assets/showcase-packs/dreamspire.webp')}
+.avron-showcase[data-style-pack="starruins"]{--pack-gold:#e4a6db;--pack-secondary:#7772bc;--pack-dark:#120e1e;--pack-art:url('../assets/showcase-packs/starruins.webp')}
+.avron-showcase[data-style-pack="bloodmoon"]{--pack-gold:#f26d59;--pack-secondary:#a24b59;--pack-dark:#16090e;--pack-art:url('../assets/showcase-packs/bloodmoon.webp')}
+.avron-showcase[data-style-pack="iridescent"]{--pack-gold:#eec38a;--pack-secondary:#a6dbd4;--pack-dark:#12182b;--pack-art:url('../assets/showcase-packs/iridescent.webp')}
+.avron-showcase[data-style-pack="aether"]{--pack-gold:#8affeb;--pack-secondary:#64d1e5;--pack-dark:#061c2a;--pack-art:url('../assets/showcase-packs/aether.webp')}
+.avron-showcase[data-style-pack="emerald"]{--pack-gold:#eff2d8;--pack-secondary:#6ebd8a;--pack-dark:#102438;--pack-art:url('../assets/showcase-packs/emerald.webp')}
+.avron-showcase[data-style-pack="clouds"]{--pack-gold:#f8d1b2;--pack-secondary:#b7baf8;--pack-dark:#2e2e57;--pack-art:url('../assets/showcase-packs/clouds.webp')}
+
+.avron-showcase[data-style-pack="spectral"] .showcase-card{border-radius:12px 12px 95px 95px!important;filter:drop-shadow(0 0 12px #6d4cff45)}
+.avron-showcase[data-style-pack="spectral"] .showcase-card:before{border-radius:5px 5px 50% 50%}
+.avron-showcase[data-style-pack="eden"] .showcase-card{border-radius:135px 135px 22px 22px;background:#1b3534}
+.avron-showcase[data-style-pack="eden"] .showcase-card img{filter:saturate(1.12) brightness(1.09)}
+.avron-showcase[data-style-pack="sanctuary"] .showcase-card{border-radius:135px 135px 7px 7px;border-width:2px}
+.avron-showcase[data-style-pack="sanctuary"] .showcase-card-meta{box-shadow:inset 0 4px 14px #d3b87822}
+.avron-showcase[data-style-pack="dreamspire"] .showcase-card{border-radius:10px 10px 120px 120px}
+.avron-showcase[data-style-pack="starruins"] .showcase-card{border-radius:150px 150px 3px 3px;border-style:double;border-width:3px}
+.avron-showcase[data-style-pack="bloodmoon"] .showcase-card{border-radius:12px;clip-path:polygon(0 0,93% 0,100% 7%,100% 100%,7% 100%,0 93%)}
+.avron-showcase[data-style-pack="iridescent"] .showcase-card{border-radius:45% 45% 25px 25px;box-shadow:0 0 22px #85c8ca3a}
+.avron-showcase[data-style-pack="aether"] .showcase-card{border-radius:5px;clip-path:polygon(10% 0,90% 0,100% 10%,100% 90%,90% 100%,10% 100%,0 90%,0 10%)}
+.avron-showcase[data-style-pack="emerald"] .showcase-card{border-radius:100px 100px 5px 5px;border-width:3px}
+.avron-showcase[data-style-pack="clouds"] .showcase-card{border-radius:90px 90px 28px 28px;box-shadow:0 12px 55px #bda0dc35}
+@media(max-width:700px){.avron-showcase .sh-pack-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-head{min-height:190px;padding:50px 15px 15px;border-radius:55px 55px 5px 5px}.avron-showcase[data-style-pack]:not([data-style-pack="original"]) .showcase-head:before{border-radius:50px 50px 4px 4px}}
+@media(prefers-reduced-motion:reduce){.sh-pack-tile{transition:none!important}}

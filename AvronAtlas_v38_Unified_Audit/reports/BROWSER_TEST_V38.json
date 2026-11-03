@@ -1,0 +1,84 @@
+{
+  "tests": [
+    {
+      "test": "Index of imported archive, 266 objects, all engines",
+      "result": "PASS",
+      "registry": 1381,
+      "articles": 912,
+      "books": 3,
+      "issueCount": 0,
+      "hasLore": true,
+      "hasImport": true,
+      "testArticle": true,
+      "imageCount": 285
+    },
+    {
+      "test": "Canonical article with three parents, backlinks, chronicle scene",
+      "result": "PASS",
+      "book": "book-mw05xlqi7riz8istgqr",
+      "article": "article-mw05xlqiffzcdzk0ded",
+      "cinematic": "cin-mw05xlqi14vgrjv3tfm",
+      "lore": "lore-mw05xlqitfr62mrj6c",
+      "parents": [
+        "book:book-mw05xlqi7riz8istgqr",
+        "lore:lore-mw05xlqitfr62mrj6c",
+        "entity:b5823692"
+      ],
+      "bookArticles": [
+        "article-mw05xlqiffzcdzk0ded"
+      ],
+      "linked": true,
+      "loreArticle": "article-mw05xlqiffzcdzk0ded"
+    },
+    {
+      "test": "Atlas intersection: Open article → common navigator",
+      "result": "PASS",
+      "opened": [
+        "av38-test-chronicle-article"
+      ],
+      "navArticle": true
+    },
+    {
+      "test": "Imported Finder title and test Chronicle → article link",
+      "result": "PASS",
+      "matches": 1,
+      "exactId": "foundry-3fac215f13de78578657",
+      "visible": true,
+      "chain": true
+    },
+    {
+      "test": "Detaching book parent does not delete article or unrelated parents",
+      "result": "PASS",
+      "removed": true,
+      "parentGone": true,
+      "othersRemain": true
+    },
+    {
+      "test": "Deleting article cleans reverse edges",
+      "result": "PASS",
+      "ok": true,
+      "stillExists": false,
+      "dangling": false
+    },
+    {
+      "test": "Adopt map polygon without losing geometry and remove",
+      "result": "PASS",
+      "good": true,
+      "deleted": true,
+      "stillExists": false
+    },
+    {
+      "test": "In-place v37 archive upgrade is idempotent and preserves user-edited content",
+      "result": "PASS",
+      "oldCount": 26,
+      "after": 912,
+      "firstNew": 886,
+      "secondNew": 0,
+      "preservedUserText": true,
+      "archives": 885,
+      "links": 2,
+      "issues": 0
+    }
+  ],
+  "pageerrors": []
+}

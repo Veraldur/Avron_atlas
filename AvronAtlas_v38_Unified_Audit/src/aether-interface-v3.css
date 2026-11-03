@@ -1,0 +1,34 @@
+/* AETHER III — ornamental, deliberately unobtrusive map interface */
+:root{--av-gold:#dabc87;--av-ink:#10172b;--av-blue:#203c63}
+.topbar{background:linear-gradient(115deg,#080e20f7,#152a47f2 65%,#10182e);border-bottom:1px solid #c7a36a8a;box-shadow:0 5px 25px #030912aa;gap:10px}
+.topbar .brand{flex-shrink:0}.topbar .toolbar{display:flex;gap:5px}.topbar .toolbar button{white-space:nowrap}
+.topbar .world-nav{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;min-width:0;flex:1}.topbar .world-nav::-webkit-scrollbar{display:none}
+#avronMoreNav{flex-shrink:0;border:1px solid #bca67988;background:linear-gradient(#27364e,#142038);color:#ecd7ad;border-radius:14px;padding:8px 12px}
+#avronNavPopup{position:fixed;right:14px;top:62px;z-index:80000;display:flex;flex-wrap:wrap;gap:7px;max-width:min(550px,85vw);padding:14px;background:#0c1728f5;border:1px solid #b9945e;border-radius:14px;box-shadow:0 25px 70px #000b;backdrop-filter:blur(18px)}
+#avronNavPopup[hidden]{display:none}#avronNavPopup button{background:#20334b;color:#f0d9aa;border:1px solid #bba07155;padding:9px 12px;border-radius:9px}
+.workspace{transition:grid-template-columns .26s ease;grid-template-columns:260px minmax(0,1fr) 330px}
+.workspace.av-left-folded{grid-template-columns:0 minmax(0,1fr) 330px}.workspace.av-right-folded{grid-template-columns:260px minmax(0,1fr) 0}.workspace.av-left-folded.av-right-folded{grid-template-columns:0 minmax(0,1fr) 0}
+.workspace>.left,.workspace>.right{min-width:0;overflow:auto;transition:opacity .18s ease,visibility .18s ease;border-color:#9f8a6650;background:linear-gradient(175deg,#111d35f9,#10172bf5)}
+.workspace.av-left-folded>.left,.workspace.av-right-folded>.right{visibility:hidden;opacity:0;pointer-events:none}
+.map-area{background:radial-gradient(circle at 49% 38%,#304d77 0,#1b3359 47%,#0f1b32 100%)}
+.map-area:before{content:'';position:absolute;inset:0;pointer-events:none;background:url('../assets/avron-ui-stars.jpg') center/cover;opacity:.14;mix-blend-mode:screen}
+.map-area:after{content:'';position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 95px 10px #233d62aa,inset 0 0 25px 2px #c2a87330;z-index:1}
+.avron-rail-toggle{position:absolute;top:46%;z-index:40;width:31px;height:74px;display:grid;place-items:center;border:1px solid #d5b7839c;background:linear-gradient(120deg,#253e60e9,#0c1728ee);color:#efd49e;box-shadow:0 8px 25px #0008;cursor:pointer;transition:transform .2s,border-color .2s}
+.avron-rail-toggle:hover{border-color:#ffe7b6;transform:scale(1.06)}.avron-rail-toggle.left-toggle{left:0;border-radius:0 13px 13px 0}.avron-rail-toggle.right-toggle{right:0;border-radius:13px 0 0 13px}
+.avron-hud{max-width:min(620px,calc(100% - 75px))!important;left:50%!important;transform:translateX(-50%)!important;right:auto!important;bottom:30px!important;pointer-events:none!important}
+.avron-hud>*{pointer-events:auto}.avron-hud .ah-dock{border-radius:19px!important;border:1px solid #d9b77a88!important;box-shadow:0 18px 55px #000c,0 0 32px #92b9ee22!important;backdrop-filter:blur(21px)}
+.avron-hud .ah-panel{max-height:min(40vh,330px);overflow-y:auto;box-shadow:0 15px 50px #000b!important;scrollbar-width:thin}
+.avron-hud .ah-panel.ah-minimized{max-height:65px;overflow:hidden}
+.map-footer{background:linear-gradient(90deg,transparent,#0b1932a6,transparent)!important;border:0!important;pointer-events:none}.map-footer button{pointer-events:auto}
+.float-bar{max-width:min(90%,550px);overflow-x:auto;border-radius:16px;backdrop-filter:blur(20px)}
+.avron-backdrop-select{position:fixed;z-index:999;bottom:13px;left:50%;transform:translateX(-50%);background:#0c1930ef;border:1px solid #a88b5c91;color:#edd3a3;border-radius:15px;padding:8px 11px;display:flex;gap:8px;align-items:center;box-shadow:0 9px 30px #0008;font:12px Arial,sans-serif}
+.avron-backdrop-select select{color:#efddba;background:#1b2c47;border:1px solid #9a825b;border-radius:8px;padding:6px}.avron-backdrop-select[hidden]{display:none}
+.map-area.av-bg-nebula{background:radial-gradient(ellipse at 17% 17%,#755b9b,#263c69 38%,#101a34 85%)}.map-area.av-bg-parchment{background:radial-gradient(ellipse,#a79b78,#655d4c 56%,#272c2e)}.map-area.av-bg-night{background:radial-gradient(ellipse,#294b75,#0d1428 75%)}
+.avron-showcase .showcase-card img{background:#1a2d4c}.showcase-move{flex-wrap:wrap}.showcase-move button{font-size:12px}
+.avron-showcase .showcase-head,.avron-showcase .showcase-card{position:relative}.avron-showcase .showcase-card:before{content:'✧';position:absolute;right:12px;top:10px;color:#ffe6a2;text-shadow:0 0 12px #d3b674;z-index:2}.avron-showcase .showcase-head:after{content:'✦  ·  ✧  ·  ✦';position:absolute;right:5px;bottom:-9px;color:#d6b67d;background:#0e192e;padding:0 15px}
+.avron-type-group{margin:7px 0;border:1px solid #967b534a;border-radius:9px;overflow:hidden}.avron-type-group summary{padding:10px 12px;background:#24365077;cursor:pointer;color:#dfc28e;font-weight:600}.avron-type-group>.library-folder-content{padding:6px 10px}
+@media(max-width:1100px){.topbar{height:auto}.workspace{height:calc(100vh - 90px)}.workspace.av-left-folded{grid-template-columns:0 minmax(0,1fr) 290px}.workspace.av-right-folded{grid-template-columns:220px minmax(0,1fr) 0}}
+@media(max-width:680px){.workspace{grid-template-columns:0 minmax(0,1fr) 0!important}.workspace>.left,.workspace>.right{visibility:hidden;opacity:0}.avron-rail-toggle{top:37%}.avron-backdrop-select{bottom:5px}.avron-hud{bottom:52px!important}}
+@media(prefers-reduced-motion:reduce){.workspace,.avron-rail-toggle{transition:none}}
+
+.avron-knowledge-toast{position:fixed;z-index:100000;top:85px;left:50%;transform:translate(-50%,-25px);opacity:0;pointer-events:none;transition:opacity .45s,transform .45s;padding:20px 45px;text-align:center;min-width:320px;color:#fae7bd;background:radial-gradient(ellipse at center,#31476eec,#101a31f6 78%);border:1px solid #f2d397;border-radius:80px 80px 12px 12px;box-shadow:0 0 55px #bd9d6a80,0 22px 60px #000c}.avron-knowledge-toast.shown{opacity:1;transform:translate(-50%,0)}.avron-knowledge-toast span{display:block;color:#d7b975;font:10px Arial;letter-spacing:.3em}.avron-knowledge-toast strong{display:block;font:31px Georgia;margin:9px 0}.avron-knowledge-toast small{font:12px Arial;color:#c5d0e6}

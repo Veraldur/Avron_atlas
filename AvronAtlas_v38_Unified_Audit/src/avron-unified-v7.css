@@ -1,0 +1,25 @@
+
+/* Avron VII: unified top navigation and usable panel geometry */
+.topbar{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;gap:12px!important;min-height:65px;z-index:1000!important;position:relative}
+.topbar .world-nav,.topbar #avronCreate,.topbar #avronMoreNav{display:none!important}
+.topbar .brand{flex:0 0 auto;min-width:160px}
+.topbar .toolbar{margin-left:auto;flex:0 1 auto;min-width:0;display:flex;gap:7px!important}
+.topbar .toolbar #btnLoad{display:none!important}
+.topbar .status{max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#avUnifiedMenu{position:relative;flex:0 0 auto;z-index:1050}
+#avMainMenuToggle{border:1px solid #dfc48e9c;color:#ffe4b2;background:linear-gradient(135deg,#203b56,#111c32);border-radius:12px;padding:11px 19px;white-space:nowrap;cursor:pointer}
+#avMainMenuToggle span{margin-left:12px}
+#avMainMenuPanel{position:absolute;top:calc(100% + 10px);left:0;width:285px;max-height:min(76vh,620px);overflow:auto;padding:13px;border:1px solid #d8b77b9c;border-radius:14px;background:linear-gradient(160deg,#182d49f7,#0c172cfb);box-shadow:0 25px 65px #000b;color:#ead2a6}
+#avMainMenuPanel[hidden]{display:none!important}
+.av-menu-row{display:flex;gap:5px;margin-bottom:5px}.av-menu-row button,.av-menu-custom,.av-menu-tools button{color:#f3ddb2;background:#ffffff0b;border:1px solid #bc9e6b46;border-radius:9px;padding:10px 12px;cursor:pointer;text-align:left}.av-menu-row button:first-child{flex:1}.av-menu-row button:hover,.av-menu-tools button:hover{background:#be9d582c}.av-menu-tools{border-top:1px solid #c8ac7550;margin-top:10px;padding-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:7px}.av-menu-tools button{font-size:12px}.av-menu-custom{width:100%;margin-top:6px}
+.av-system-nav{display:none!important}
+#avronMoreNav{display:none!important}
+/* Backdrop appears outside the opaque image only; each choice intentionally distinct. */
+.map-area:before{display:none!important}
+.map-area.av-bg-night{background:#132c4b!important}
+.map-area.av-bg-nebula{background:radial-gradient(circle at 15% 25%,#805d9d,#383d75 42%,#141c36 90%)!important}
+.map-area.av-bg-parchment{background:repeating-linear-gradient(45deg,#9a8966,#9a8966 14px,#a89a78 16px,#a89a78 31px)!important}
+#game-container canvas{opacity:1!important;mix-blend-mode:normal!important;filter:none!important}
+/* Showcases: clear, visible editorial control styles. */
+.avron-showcase .showcase-head-actions [data-showcase-save]{background:linear-gradient(120deg,#f2dba5,#ba8d4c)!important;color:#201a13!important;font-weight:700}
+@media(max-width:850px){.topbar .brand small{display:none}.topbar .brand{min-width:0}.topbar .status{display:none}.topbar .toolbar #btnSave{font-size:11px;padding:9px}.topbar{gap:6px!important}#avMainMenuToggle{padding:9px 12px}#avMainMenuPanel{left:-95px}}

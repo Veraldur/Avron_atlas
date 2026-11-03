@@ -1,0 +1,8 @@
+/* The gallery and Pantheon share one compact tray. */
+#avronShowcase .showcase-layout{display:block;position:relative}
+#avronShowcase .showcase-index{position:absolute!important;top:56px;left:16px;z-index:40;width:min(320px,calc(100vw - 40px));max-height:70vh;overflow:auto;display:none!important;background:rgba(13,24,42,.97);border:1px solid #b49868;border-radius:15px;box-shadow:0 16px 60px #000b;padding:15px}
+#avronShowcase.av22-tray-open .showcase-index{display:block!important}
+#avronShowcase .showcase-main{min-width:0;width:100%;position:relative}
+#avronShowcase .av22-tray-button{position:sticky;top:12px;z-index:35;margin:10px 16px;padding:11px 17px;background:#182b42;color:#f5ddb3;border:1px solid #ac905d;border-radius:12px;cursor:pointer;font-weight:650;box-shadow:0 8px 22px #0005}
+#avronShowcase .showcase-gallery{max-width:100%}
+.av22-book-scenes{display:grid;gap:14px;margin:14px 0 24px}.av22-book-scene{display:grid;grid-template-columns:minmax(120px,35%) 1fr;overflow:hidden;border:1px solid #ac905d;border-radius:12px;background:linear-gradient(110deg,#1c2e49,#101a2b);color:#f1dcba;min-height:160px}.av22-book-scene-art{background-position:center;background-size:cover;min-height:160px}.av22-book-scene>div:last-child{padding:20px}.av22-book-scene button{background:#344e6d;color:#ffe3ad;padding:10px;border:1px solid #bc9f6f;border-radius:8px;cursor:pointer}

@@ -1,0 +1,26 @@
+{
+  "sourceWorld": "v37+v38",
+  "newTitleLinks": 2,
+  "preexistingTitleLinks": 50,
+  "unresolvedTitles": [],
+  "ambiguousTitles": [],
+  "updated": [
+    {
+      "from": "article:av38-test-article-light-amena",
+      "to": "entity:083f51fb",
+      "title": "Цитадель Вечного Света"
+    },
+    {
+      "from": "article:av38-test-article-light-amena",
+      "to": "article:iveratos-v36-ideas",
+      "title": "План Идей и Солнце Аврона"
+    }
+  ],
+  "counts": {
+    "article": 27,
+    "entity": 266,
+    "god": 19,
+    "showcase": 3,
+    "book": 3
+  }
+}

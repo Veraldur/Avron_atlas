@@ -1,0 +1,19 @@
+{
+  "source_md": 885,
+  "imported_attachments": 174,
+  "attached_image_references": 286,
+  "missing_image_references": 0,
+  "missing_local_scripts_or_styles": [],
+  "unique_ids": true,
+  "material_counts": {
+    "article": 912,
+    "entity": 266,
+    "book": 3,
+    "cinematic": 1
+  },
+  "bootstrap_matches_export": true,
+  "readable_archive_inputs": true,
+  "script_count": 42,
+  "script_style_links": 75,
+  "current_world_bytes": 4560519
+}

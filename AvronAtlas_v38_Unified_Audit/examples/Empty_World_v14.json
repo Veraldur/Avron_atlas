@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 7,
+  "id": "empty-world",
+  "name": "Новый мир",
+  "types": [],
+  "relationTypes": [],
+  "maps": [],
+  "entities": [],
+  "relations": [],
+  "libraries": [
+    {
+      "id": "library-main",
+      "name": "Библиотека"
+    }
+  ],
+  "folders": [],
+  "articles": [],
+  "timeline": {
+    "calendars": [],
+    "eras": [],
+    "campaigns": [],
+    "tracks": []
+  },
+  "sections": [],
+  "media": {
+    "music": [],
+    "musicName": ""
+  },
+  "showcases": [],
+  "chronicleBooks": [],
+  "interfaceSlots": {
+    "top": [
+      "home",
+      "map",
+      "encyclopedia",
+      "lore",
+      "showcases"
+    ],
+    "dock": []
+  },
+  "studio": {
+    "version": 1,
+    "activeMode": "read",
+    "popupSnap": false
+  },
+  "studioVersion": 14
+}

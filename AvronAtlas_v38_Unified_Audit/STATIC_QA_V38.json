@@ -1,0 +1,27 @@
+{
+  "counts": {
+    "JS": 43,
+    "linkedScriptTags": 39,
+    "linkedStyles": 35,
+    "allStyles": 35,
+    "entities": 266,
+    "articles": 27,
+    "books": 3,
+    "loreRecords": 1,
+    "exhibitsSourceShowcases": 3,
+    "contentLinks": 130
+  },
+  "checks": {
+    "art": true,
+    "book": true,
+    "lore": true,
+    "map": true,
+    "js": true,
+    "assets": true,
+    "links": true,
+    "embeddedJson": true
+  },
+  "missingResources": [],
+  "syntaxFailures": [],
+  "brokenExplicitReferences": []
+}
