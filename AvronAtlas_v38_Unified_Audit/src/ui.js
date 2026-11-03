@@ -384,7 +384,7 @@ function showAreaChooser(ids) {
   const box = el('div', { class: 'area-chooser' });
   box.append(el('strong', {}, 'Выберите область'));
   ids.map(ent).filter(Boolean).forEach(e => box.append(btn(label(e) + ' · ' + (typeOf(e)?.name || 'Область'), () => {
-    box.remove(); if (e.popup?.enabled) showMapPopup(e.id); else { S.selId = e.id; renderAll(); }
+    box.remove(); selectEntity(e.id); if (e.popup?.enabled) showMapPopup(e.id);
   }, 'wide')));
   box.append(btn('Закрыть', () => box.remove(), 'mini')); layer.append(box);
 }
@@ -702,10 +702,11 @@ function relTypeCard(r) {
 
 /* ===== режимы, файлы, клавиши ===== */
 function setMode(m) {
+  document.body.classList.toggle("av41-neutral", S.world?.presentation?.theme === 'frutiger-aero');
   window.AvronFinder?.invalidate?.();S.mode = m; S.pick = null; if (m === 'read') S.tool = 'select';
   SC.cancelDraft(true); document.body.classList.toggle('read', m === 'read');
   if (m === 'read' && S.tab === 'types') S.tab = 'object';
-  renderTop(); renderTools(); renderObject(); renderFilters(); renderLib(); renderFloat(); setTab(S.tab); SC.refresh(); if(S.screen==='section')renderSection();window.dispatchEvent(new Event('avron-mode-changed'));
+  renderTop(); renderTools(); renderObject(); renderFilters(); renderLib(); renderFloat(); setTab(S.tab); SC.refresh(); if(S.screen==='section')renderSection();else if(S.screen==='encyclopedia')renderEncyclopedia();else if(S.screen==='timeline'&&typeof renderTimelineScreen==='function')renderTimelineScreen();window.dispatchEvent(new Event('avron-mode-changed'));
 }
 function renderWorldNav() {
   const host=$('customNav'); if(!host)return; host.textContent='';
@@ -945,6 +946,7 @@ function loadWorld(w, msg) {
   useWorld(w); S.unsaved = false; S.uploads = {}; S.rev = {}; S.openArticleId = null;
   S.world.maps.forEach(m => { if (String(m.src || '').startsWith('data:image/')) S.uploads[m.id] = m.src; });
   if (SC) { SC.camSt = {}; SC.curMap = null; SC.openMap(S.mapId, { refit: true }); }
+  document.body.classList.toggle('av41-neutral', S.world.presentation?.theme === 'frutiger-aero');
   renderAll();window.dispatchEvent(new Event('avron-world-loaded')); scheduleSave(); setStatus(msg || 'Мир загружен');
 }
 function saveFile() {

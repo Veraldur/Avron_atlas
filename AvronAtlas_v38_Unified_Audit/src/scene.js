@@ -174,13 +174,15 @@ class WorldScene extends Phaser.Scene {
     const g = this.areasG, z = this.zoom, read = S.mode === 'read';
     g.clear(); this.areaTx.forEach(t => t.destroy()); this.areaTx = [];
     const list = this.visible().filter(e => geo(e) === 'area').sort((a, b) => polyArea(b.points) - polyArea(a.points));
+    list.sort((a,b)=>Number(a.id===S.selId)-Number(b.id===S.selId));
     for (const e of list) {
-      const col = hex(e.color || typeOf(e).color), sel = e.id === S.selId, hov = e.id === this.hoverId;
+      const col = hex(e.color || typeOf(e).color), sel = e.id === S.selId, hov = this.hoverId?.split("|").includes(e.id);
       const opacity = e.opacity == null ? 1 : clamp(Number(e.opacity), 0, 1);
       const fa = (sel ? .34 : hov ? .2 : read ? .015 : .09) * opacity, la = (sel ? 1 : hov ? .85 : read ? .06 : .55) * opacity;
       const pts = e.points.map(q => ({ x: q[0], y: q[1] }));
       g.fillStyle(col, fa).fillPoints(pts, true, true);
-      g.lineStyle((sel ? 3 : 2) / z, col, la).strokePoints(pts, true, true);
+      if (sel) g.lineStyle(6 / z, 0x102536, .95).strokePoints(pts, true, true);
+      g.lineStyle((sel ? 3 : 2) / z, sel ? 0xffe99b : col, sel ? 1 : la).strokePoints(pts, true, true);
       if (!e.hideLabel && (sel || hov || (!read && S.showLabels))) {
         const c = centroid(e.points);
         this.areaTx.push(this.add.text(c.x, c.y, e.name || typeOf(e).name, { fontFamily: 'Georgia, serif', fontSize: '18px', color: '#f4ecd2', stroke: '#101619', strokeThickness: 4 })
@@ -321,29 +323,29 @@ class WorldScene extends Phaser.Scene {
 
   onUp(p) {
     const g = this.gest; this.gest = null; if (!g) return;
-    if (g.t === 'mark') {
-      if (g.moved && S.mode === 'edit') changed({ keep: true });
-      else if (!g.moved) {
-        const e=ent(g.id), now=Date.now(), dbl=this.lastAreaClick && now-this.lastAreaClick.t<360 && this.lastAreaClick.id===g.id;
-        this.lastAreaClick={t:now,id:g.id};
-        selectEntity(g.id);
-        if(S.mode==='read' && e && geo(e)==='area') {
-          const w={x:g.wx,y:g.wy}, overlaps=this.hitAreas(w);
-          if(dbl && overlaps.length>1) showMapPopups(overlaps.map(x=>x.id));
-          else if(overlaps.length>1) showAreaChooser(overlaps.map(x=>x.id));
-          else if(e.popup?.enabled) showMapPopup(e.id); else closeMapPopup();
-        } else if(S.mode==='read' && e?.popup?.enabled) showMapPopup(e.id); else if(S.mode==='read') closeMapPopup();
-      }
-    } else if (g.t === 'bg' && !g.moved) {
-      selectEntity(g.id); const e=ent(g.id); if (S.mode === 'read' && e && geo(e)==='area') {
-        const overlaps=this.hitAreas({x:g.wx,y:g.wy}), now=Date.now(), key=overlaps.map(x=>x.id).join('|');
-        const dbl=this.lastAreaClick && now-this.lastAreaClick.t<360 && this.lastAreaClick.key===key;
-        this.lastAreaClick={t:now,key};
-        if(dbl && overlaps.length>1) { clearTimeout(this.areaClickTimer); showMapPopups(overlaps.map(x=>x.id)); }
-        else if(overlaps.length>1) { clearTimeout(this.areaClickTimer); const ids=overlaps.map(x=>x.id); this.areaClickTimer=setTimeout(()=>showAreaChooser(ids),280); }
-        else if(e.popup?.enabled) showMapPopup(e.id); else closeMapPopup();
-      } else if (S.mode === 'read' && e?.popup?.enabled) showMapPopup(e.id); else if (S.mode === 'read') closeMapPopup();
-    } else if (g.t === 'vertex' || g.t === 'areamove') changed({ keep: true });
+    if (g.moved) {
+      if ((g.t === 'mark' && S.mode === 'edit') || g.t === 'vertex' || g.t === 'areamove') changed({ keep: true });
+      return;
+    }
+    if (g.t !== 'mark' && g.t !== 'bg') return;
+    if (S.selId !== g.id) selectEntity(g.id);
+    const e = ent(g.id);
+    if (g.t === 'bg' && e && geo(e) === 'area') {
+      const ids = this.hitAreas({x:g.wx,y:g.wy}).map(area=>area.id);
+      const key = JSON.stringify([S.mapId,...ids]);
+      const now = Date.now(), last = this.lastAreaClick;
+      const doubleClick = last?.key === key && now-last.time < 360 &&
+        Math.hypot(p.x-last.x,p.y-last.y) < 12;
+      this.lastAreaClick = doubleClick ? null : {key,time:now,x:p.x,y:p.y};
+      if (doubleClick && ids.some(id=>ent(id)?.popup?.enabled)) showMapPopups(ids);
+      else if (S.mode === 'read' && ids.length > 1) showAreaChooser(ids);
+      else if (S.mode === 'read' && e.popup?.enabled) showMapPopup(e.id);
+      else if (S.mode === 'read') closeMapPopup();
+      return;
+    }
+    this.lastAreaClick = null;
+    if (S.mode === 'read' && e?.popup?.enabled) showMapPopup(e.id);
+    else if (S.mode === 'read') closeMapPopup();
   }
 
   /* ---------- создание объектов ---------- */

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 4,
+  "id": "new-world",
+  "name": "Новый мир",
+  "types": [
+    {
+      "id": "t-obj",
+      "name": "Объект",
+      "color": "#e5bd62",
+      "glyph": "●",
+      "geometry": "point",
+      "quick": false,
+      "fields": []
+    },
+    {
+      "id": "t-area",
+      "name": "Область",
+      "color": "#7fc4a0",
+      "glyph": "▧",
+      "geometry": "area",
+      "quick": false,
+      "fields": []
+    }
+  ],
+  "relationTypes": [
+    {
+      "id": "r-link",
+      "name": "Связан с",
+      "reverse": "",
+      "directed": false,
+      "color": "#d6b56c"
+    }
+  ],
+  "maps": [
+    {
+      "id": "main",
+      "name": "Мир",
+      "src": "",
+      "width": 6500,
+      "height": 4500,
+      "parentId": ""
+    }
+  ],
+  "entities": [],
+  "relations": [],
+  "libraries": [
+    {
+      "id": "library-main",
+      "name": "Основная библиотека"
+    }
+  ],
+  "folders": [],
+  "articles": [],
+  "timeline": {
+    "calendars": [],
+    "eras": [],
+    "campaigns": [],
+    "events": [],
+    "moonArticles": []
+  },
+  "sections": [
+    {
+      "id": "pantheon",
+      "name": "Пантеон",
+      "icon": "✧",
+      "layout": "encyclopedia",
+      "entries": []
+    }
+  ],
+  "media": {
+    "music": "",
+    "musicName": ""
+  },
+  "presentation": {
+    "theme": "frutiger-aero",
+    "iconNavigation": true
+  },
+  "pantheonConfigured": true,
+  "pantheon": [],
+  "chronicles": [],
+  "beliefMatrix": [],
+  "autoWikiLinks": true,
+  "storyForgeTables": {},
+  "showcases": [],
+  "chronicleBooks": [],
+  "interfaceSlots": {},
+  "atlasRelease": 42
+}

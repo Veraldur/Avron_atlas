@@ -57,7 +57,14 @@ function autoForEntity(id){const ent=item('entity',id);if(!ent)return[];
  return a;
 }
 function outgoing(ref){const {kind,id}=canonical(ref);const explicit=routes()[key(kind,id)]||[];
- const model=item(kind,id),auto=kind==='entity'?autoForEntity(id):kind==='book'?(model?.articleIds||[]).filter(a=>valid('article',a)).map(id=>({kind:'article',id,label:'Статья Летописи'})):kind==='lore'&&model?.articleId&&valid('article',model.articleId)?[{kind:'article',id:model.articleId,label:'Статья пересечения'}]:[];const relationships=kind==='entity'?(w()?.relations||[]).filter(r=>String(r.from)===String(id)&&valid('entity',r.to)).map(r=>({kind:'entity',id:String(r.to),label:(w()?.relationTypes||[]).find(t=>t.id===r.typeId)?.name||'Связанный объект'})):[];return [...explicit,...auto,...relationships].filter((r,i,a)=>a.findIndex(x=>x.kind===r.kind&&x.id===r.id)===i);
+ const model=item(kind,id),auto=kind==='entity'?autoForEntity(id):kind==='book'?(model?.articleIds||[]).filter(a=>valid('article',a)).map(id=>({kind:'article',id,label:'Статья Летописи'})):kind==='lore'&&model?.articleId&&valid('article',model.articleId)?[{kind:'article',id:model.articleId,label:'Статья пересечения'}]:[];const relationships=kind==='entity'?(w()?.relations||[]).filter(r=>String(r.from)===String(id)&&valid('entity',r.to)).map(r=>({kind:'entity',id:String(r.to),label:(w()?.relationTypes||[]).find(t=>t.id===r.typeId)?.name||'Связанный объект'})):[];const source=key(kind,id);
+ const graphLinks=(window.AvronMaterials?.graph?.()||[])
+   .filter(edge=>edge.from===source||edge.to===source)
+   .map(edge=>({...canonical(edge.from===source?edge.to:edge.from),label:edge.label}));
+ return [...explicit,...auto,...relationships,...graphLinks].filter((r,i,a)=>
+   key(r.kind,r.id)!==source&&valid(r.kind,r.id)&&
+   (S.mode==='edit'||!(r.kind==='article'&&item(r.kind,r.id)?.draft))&&
+   a.findIndex(x=>x.kind===r.kind&&x.id===r.id)===i);
 }
 function all(){return (window.AvronRegistry?.all?.()||[]).filter(x=>S.mode==='edit'||(x.kind!=='article'||!item('article',x.id)?.draft)).map(x=>({kind:x.kind,id:x.id,name:x.title}));}
 function link(fromRef,toRef,label=''){if(S.mode!=='edit')throw Error('Только Редактор');const done=window.AvronMaterials?.attach?.(fromRef,toRef,{label});if(!done)throw Error('Ссылка не создана: материал отсутствует');return routes()[key(canonical(fromRef).kind,canonical(fromRef).id)]}
@@ -71,7 +78,7 @@ function audit(){const failures=[];const x=w()||{};
  for(const p of x.puzzles||[]){for(const rid of p.requiredRelicIds||[])if(!valid('relic',rid))failures.push({source:key('puzzle',p.id),target:key('relic',rid),error:'Требуемая находка отсутствует'});if(p.unlockArticleId&&!valid('article',p.unlockArticleId))failures.push({source:key('puzzle',p.id),target:key('article',p.unlockArticleId),error:'Награда отсутствует'})}
  return{total:all().length,explicit:Object.values(x.contentLinks||{}).reduce((n,a)=>n+a.length,0),failures};
 }
-function targetRows(arr){return arr.map(a=>`<button class="av30-item" data-to="${e(key(a.kind,a.id))}" title="Открыть ${e(names[a.kind])}"><span class="av30-kind">${e(names[a.kind]||a.kind)}</span><span>${e(a.name||a.label||title(item(a.kind,a.id)))}</span><i class="av30-dot ${state(a.kind,a.id)}"></i></button>`).join('')}
+function targetRows(arr){return arr.map(a=>`<button class="av30-item" data-to="${e(key(a.kind,a.id))}" title="Открыть ${e(names[a.kind])}"><span class="av30-kind">${e(names[a.kind]||a.kind)}</span><span>${e(a.name||title(item(a.kind,a.id))||a.label)}</span><i class="av30-dot ${state(a.kind,a.id)}"></i></button>`).join('')}
 function dialog(mode='jump',fromRef=null){view=mode;from=fromRef?canonical(fromRef):null;q='';panel.hidden=false;render();}
 function render(){if(panel.hidden)return;const editor=S.mode==='edit';const source=from&&item(from.kind,from.id),items=all(),query=q.toLocaleLowerCase('ru');const filtered=items.filter(x=>(x.name+' '+names[x.kind]+' '+x.id).toLocaleLowerCase('ru').includes(query)).slice(0,75);
  const actual=source?outgoing(from):[];
@@ -86,7 +93,7 @@ function render(){if(panel.hidden)return;const editor=S.mode==='edit';const sour
 function create(kind,src){if(S.mode!=='edit')throw Error('Только Редактор');const parents=src?[key(src.kind,src.id)]:[];const obj=window.AvronMaterials?.create?.(kind,{title:({article:'Новая статья',node:'Новое место',showcase:'Новая витрина',room:'Новое приключение'})[kind]||'Новый материал',parents,entityId:src?.kind==='entity'?src.id:''});if(!obj)throw Error('Создание материала не удалось');lastStatus='Создано: '+title(obj);return obj;}
 function objectActions(){const id=S.selId;const ent=item('entity',id);if(!ent)return null;
  const links=outgoing({kind:'entity',id});const box=document.createElement('section');box.className='av30-object-actions';box.id='av30ObjectActions';box.dataset.entity=id;
- box.innerHTML=`<div class="av30-actions-header"><strong>✧ Материалы и переходы</strong><span>${e(ent.name)}</span></div><div class="av30-object-links">${links.map(r=>`<button type="button" data-open="${e(key(r.kind,r.id))}">${e(names[r.kind]||r.kind)} · ${e(r.label||title(item(r.kind,r.id)))}</button>`).join('')||'<small>Нет привязанных представлений. Можно создать или подключить.</small>'}</div><div class="av30-quick"><button data-action="article">▤ Статья</button><button data-action="node">⌂ Исследование</button><button data-action="showcase">◈ Витрина</button><button data-action="room">⚔ Приключение</button><button data-action="link">＋ Связать</button></div>`;
+ box.innerHTML=`<div class="av30-actions-header"><strong>✧ Материалы и переходы</strong><span>${e(ent.name)}</span></div><div class="av30-object-links">${links.map(r=>`<button type="button" data-open="${e(key(r.kind,r.id))}">${e(names[r.kind]||r.kind)} · ${e(title(item(r.kind,r.id))||r.label)}</button>`).join('')||'<small>Нет привязанных представлений. Можно создать или подключить.</small>'}</div><div class="av30-quick"><button data-action="article">▤ Статья</button><button data-action="node">⌂ Исследование</button><button data-action="showcase">◈ Витрина</button><button data-action="room">⚔ Приключение</button><button data-action="link">＋ Связать</button></div>`;
  box.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>open(b.dataset.open));box.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>{const k=b.dataset.action,src={kind:'entity',id};if(k==='link')dialog('link',src);else{const already=links.find(r=>r.kind===k);if(already)open(already);else if(S.mode==='edit'){const r=create(k,src);open({kind:k,id:r.id});}else dialog('jump',src)}});return box;
 }
 let busy=false;
